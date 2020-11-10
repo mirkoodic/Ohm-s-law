@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<body>
+
+    <div id="app">
+        <h1>{{ message }}</h1>
+        <div class="container-fluid">
+            <div class="col-3">
+                <div class=" form-group">
+                    <label for="u">U (napon V)</label>
+                    <div class="input-group">
+
+                        <input id="u" class="form-control" type=number step="any" v-model.number="u" @input="calc">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="radio" name="o" value="u" v-model="picked"
+                                    aria-label="Radio button for following text input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="a">I (struja A)</label>
+                    <div class="input-group">
+
+                        <input class="form-control" type=number step="any" v-model.number="i" id="i" @input="calc">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="radio" name="o" value="i" v-model="picked"
+                                    aria-label="Radio button for following text input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="r">R (otpor &#8486;)</label>
+                    <div class="input-group">
+
+                        <input class="form-control" id="r" type=number step="any" v-model.number="r" @input="calc">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="radio" name="o" value="r" v-model="picked"
+                                    aria-label="Radio button for following text input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="r">P (Snaga W)</label>
+                    <div class="input-group">
+
+                        <div class="form-control" id="p">{{p}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            var myObject = new Vue({
+                el: '#app',
+                data: {
+                    picked: "i",
+                    i: 1,
+                    u: 1,
+                    r: 1,
+                    p: 1,
+                    message: 'Ohmov zakon'
+                },
+                created: function () {
+                    this.picked = "r"
+                },
+                watch: {
+                    picked: function (newQuestion, oldQuestion) {
+
+                        document.getElementById(newQuestion).readOnly = true;
+                        document.getElementById(oldQuestion).readOnly = false;
+                    }
+                },
+                methods: {
+                    calc() {
+                        switch (this.picked) {
+                            case 'i':
+                                this.ic();
+                                break;
+                            case 'u':
+                                this.uc()
+                                break;
+                            case 'r':
+                                this.rc()
+                                break;
+                            default:
+                            // code block
+                        }
+                        this.p = roundToTwo(this.u * this.i)
+                    },
+                    ic() {
+                        this.i = roundToTwo(this.u / this.r)
+                    },
+                    uc() {
+                        this.u = roundToTwo(this.i * this.r)
+                    },
+                    rc() {
+                        this.r = roundToTwo(this.u / this.i)
+
+                    }
+                }
+            })
+            
+            function roundToTwo(num) {
+                return +(Math.round(num + "e+2") + "e-2");
+            }
+        </script>
+
+</body>
+
+</html>
